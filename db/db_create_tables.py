@@ -1,5 +1,6 @@
 from db.db_base import Base,engine
 from models.Tarefa import Tarefa
+from models.Ball import Ball
 
 # Cria tabelas 
 def db_create_tables():

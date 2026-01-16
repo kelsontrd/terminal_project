@@ -2,6 +2,7 @@ from sqlalchemy.orm import sessionmaker
 from db.db_base import session
 from models.Tarefa import Tarefa
 from db.db_create_tables import db_create_tables
+from search_api.convert_spreadsheet_data_json import init
 
 
 # Funções CRUD
@@ -73,4 +74,5 @@ def menu():
 if __name__ == "__main__":
     # Cria as tabelas no banco de dados
     db_create_tables()
+    init()
     menu()

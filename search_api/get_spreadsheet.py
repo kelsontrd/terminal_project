@@ -9,7 +9,7 @@ def get_plan(
     """
     Faz o download de uma planilha a partir de uma URL e a salva localmente.
     """
-    folder_path = os.path.join(os.getcwd(), "search_api", "get_spreadsheet", "spreadsheets_downloads")
+    folder_path = os.path.join(os.getcwd(), "search_api", "spreadsheets_downloads")
 
     try:
         file_path = os.path.join(folder_path, file_name)

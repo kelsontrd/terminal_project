@@ -29,7 +29,9 @@ def format_date(date):
 
 
 def extract_data_from_excel(
-    file_path=os.path.join(os.getcwd(), "search_api", "get_spreadsheet", "spreadsheets_downloads", "lotofacil.xlsx")
+    file_path=os.path.join(
+        os.getcwd(), "search_api", "spreadsheets_downloads", "lotofacil.xlsx"
+    )
 ):
     """Extrai dados de uma planilha Excel e os converte em uma lista de dicionários JSON."""
     try:
@@ -61,8 +63,10 @@ def extract_data_from_excel(
 
             results.append(reg)
         except Exception as e:
-            print(f"Erro ao processar linha {row['Concurso']}: {e}")  # CORREÇÃO: Mostrar o erro
- 
+            print(
+                f"Erro ao processar linha {row['Concurso']}: {e}"
+            )  # CORREÇÃO: Mostrar o erro
+
     return results
 
 
