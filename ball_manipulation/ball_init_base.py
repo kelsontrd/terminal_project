@@ -44,10 +44,9 @@ def ball_init_base():
             )
         )
         
-        for j in range(i): # \r volta o cursor para o início da linha 
-            sys.stdout.write(f"\rProgresso: {i}%") 
-            sys.stdout.flush()
-            time.sleep(0.05)
+        # sys.stdout.write(f"\Inserindo Bola numero: {i}%") # j*4 para mostrar o progresso de 4 em 4%
+        # sys.stdout.flush() # necessário para atualizar o progresso no terminal
+        # time.sleep(0.05) # para não sobrecarregar o terminal com atualizações
     try:
         # session.bulk_insert_mappings(Ball, balls)
         session.execute(delete(Ball))  # Clear existing data

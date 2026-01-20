@@ -2,14 +2,14 @@ from util.system_clear import clear_system
 
 def menu_principal():
     clear_system()
-    print("\n--- Menu Principal ---")
+    print("\n--- Menu Principal ---\n")
     print("1. Resetar ou Atualizar Base De Dados")
     print("2. -----")
     print("3. -----")
     print("4. ------")
     print("5. Sair")
 
-    opcao = input("Escolha uma opção: ")
+    opcao = input("\nEscolha uma opção: ")
 
     if opcao == "1":
         return "menu_reset_data_base"

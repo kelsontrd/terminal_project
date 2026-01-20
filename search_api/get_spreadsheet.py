@@ -5,7 +5,7 @@ import os
 def get_plan(
     url="https://servicebus2.caixa.gov.br/portaldeloterias/api/resultados/download?modalidade=Lotof%C3%A1cil",
     file_name="lotofacil.xlsx",
-):
+    ):
     """
     Faz o download de uma planilha a partir de uma URL e a salva localmente.
     """
