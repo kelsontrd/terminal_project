@@ -8,7 +8,7 @@ class Ball(Timestump, Base):
     id = Column(Integer, primary_key=True)
     desc = Column(Integer, unique=True)
     frequency = Column(Integer)
-    current_sequency = Column(Integer)
+    currente_sequence = Column(Integer)
     max_sequence = Column(Integer)
     currente_delay = Column(Integer)
     max_delay = Column(Integer)

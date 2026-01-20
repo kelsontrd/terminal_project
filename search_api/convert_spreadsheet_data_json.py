@@ -4,6 +4,8 @@ import json
 import os
 from datetime import datetime
 from search_api.get_spreadsheet import get_plan
+from util.system_clear import clear_system
+import time
 
 
 def format_date(date):
@@ -90,9 +92,13 @@ def save_data():
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(dados, f, ensure_ascii=False, indent=2)
 
+    clear_system()
     print(f"✅ Arquivo JSON criado com sucesso!")
+    time.sleep(1)
     print(f"📁 Caminho: {json_path}")
+    time.sleep(1)
     print(f"📄 Arquivo: {base_games}")
+    time.sleep(1)
     print(f"📊 Total de registros: {len(dados)}")
 
 
