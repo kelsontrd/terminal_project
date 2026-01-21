@@ -5,10 +5,9 @@ from sqlalchemy import delete
 from search_api.convert_spreadsheet_data_json import init
 
 def ball_init_base():
-    init()
+    #init()
     data_balls = load_json("base_games")
     balls = []
-    status = ""
     
     for i in range(1, 26):
         frequency = 0

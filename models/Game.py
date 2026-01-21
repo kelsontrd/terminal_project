@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Table, ForeignKey
+from sqlalchemy import Column, Integer, Table, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from models.Ball import Ball
 from db.db_base import Base
@@ -9,6 +9,7 @@ class Game(Timestump, Base):
     __tablename__ = "games"
     id = Column(Integer, primary_key=True)
     number = Column(Integer, unique=True)
+    date = Column(DateTime)
     pairs = Column(Integer)
     sum_pairs = Column(Integer)
     odds = Column(Integer)

@@ -4,6 +4,7 @@ from sqlalchemy import delete
 from models.Game import Game, game_ball
 from models.Ball import Ball
 from db.db_base import session
+import datetime
 
 # Inicia a base de dados de jogos, carrega os dados do JSON e insere na tabela Game
 # Usada para apagar todo o banco de dados e inserir os dados novamente
@@ -21,26 +22,27 @@ def game_init_base():
     for game in data_games:
         game_temp = Game(
                 number=game["concurso"],
-                pairs=GameCalcData.cont_pairs(game["drawn_numbers"]),
-                sum_pairs=GameCalcData.sum_pairs(game["drawn_numbers"]),
-                odds=GameCalcData.cont_odds(game["drawn_numbers"]),
-                sum_odds=GameCalcData.sum_odds(game["drawn_numbers"]),
-                primes=GameCalcData.cont_primes(game["drawn_numbers"]),
-                sum_primes=GameCalcData.sum_primes(game["drawn_numbers"]),
-                fibonaccis=GameCalcData.cont_fibonaccis(game["drawn_numbers"]),
-                sum_fibonaccis=GameCalcData.sum_fibonaccis(game["drawn_numbers"]),
-                sum_general=GameCalcData.sum_array(game["drawn_numbers"]),
-                center=GameCalcData.cont_center(game["drawn_numbers"]),
-                sum_center=GameCalcData.sum_center(game["drawn_numbers"]),
-                border=GameCalcData.cont_border(game["drawn_numbers"]),
-                sum_border=GameCalcData.sum_border(game["drawn_numbers"]),
-                repeated_previous_game=GameCalcData.count_repeated_previous_game(game["drawn_numbers"], previous_game_balls),
-                pairs_repeated_previous_game=GameCalcData.count_pairs_repeated_previous_game(game["drawn_numbers"], previous_game_balls),
-                odds_repeated_previous_game=GameCalcData.count_odds_repeated_previous_game(game["drawn_numbers"], previous_game_balls),
-                primes_repeated_previous_game=GameCalcData.count_primes_repeated_previous_game(game["drawn_numbers"], previous_game_balls),
-                fibonaccis_repeated_previous_game=GameCalcData.count_fibonaccis_repeated_previous_game(game["drawn_numbers"], previous_game_balls),
-                center_repeated_previous_game=GameCalcData.cont_center_repeated_previous_game(game["drawn_numbers"], previous_game_balls),
-                border_repeated_previous_game=GameCalcData.cont_border_repeated_previous_game(game["drawn_numbers"], previous_game_balls),
+                date=datetime.datetime.strptime(game["data"], "%d/%m/%Y"),
+                pairs=int(GameCalcData.cont_pairs(game["drawn_numbers"])),
+                sum_pairs=int(GameCalcData.sum_pairs(game["drawn_numbers"])),
+                odds=int(GameCalcData.cont_odds(game["drawn_numbers"])),
+                sum_odds=int(GameCalcData.sum_odds(game["drawn_numbers"])),
+                primes=int(GameCalcData.cont_primes(game["drawn_numbers"])),
+                sum_primes=int(GameCalcData.sum_primes(game["drawn_numbers"])),
+                fibonaccis=int(GameCalcData.cont_fibonaccis(game["drawn_numbers"])),
+                sum_fibonaccis=int(GameCalcData.sum_fibonaccis(game["drawn_numbers"])),
+                sum_general=int(GameCalcData.sum_array(game["drawn_numbers"])),
+                center=int(GameCalcData.cont_center(game["drawn_numbers"])),
+                sum_center=int(GameCalcData.sum_center(game["drawn_numbers"])),
+                border=int(GameCalcData.cont_border(game["drawn_numbers"])),
+                sum_border=int(GameCalcData.sum_border(game["drawn_numbers"])), 
+                repeated_previous_game=int(GameCalcData.count_repeated_previous_game(game["drawn_numbers"], previous_game_balls)),
+                pairs_repeated_previous_game=int(GameCalcData.count_pairs_repeated_previous_game(game["drawn_numbers"], previous_game_balls)),
+                odds_repeated_previous_game=int(GameCalcData.count_odds_repeated_previous_game(game["drawn_numbers"], previous_game_balls)),
+                primes_repeated_previous_game=int(GameCalcData.count_primes_repeated_previous_game(game["drawn_numbers"], previous_game_balls)),
+                fibonaccis_repeated_previous_game=int(GameCalcData.count_fibonaccis_repeated_previous_game(game["drawn_numbers"], previous_game_balls)),
+                center_repeated_previous_game=int(GameCalcData.cont_center_repeated_previous_game(game["drawn_numbers"], previous_game_balls)),
+                border_repeated_previous_game=int(GameCalcData.cont_border_repeated_previous_game(game["drawn_numbers"], previous_game_balls)),
                 winners_15_hits=game["winners_15_hits"],
                 winners_14_hits=game["winners_14_hits"],
                 winners_13_hits=game["winners_13_hits"],
@@ -64,6 +66,6 @@ def game_init_base():
     except Exception as e:
         print(f"Erro ao inserir jogos: {e}")
         session.rollback()
-# if __name__ == "__main__":
-#     print("Executando game_init_base.py diretamente...")
-#     game_init_base()
+if __name__ == "__main__":
+    print("Executando game_init_base.py diretamente...")
+    game_init_base()
