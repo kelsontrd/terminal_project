@@ -1,5 +1,4 @@
 from db.db_create_tables import db_create_tables
-from ball_manipulation.ball_init_base import ball_init_base
 from menus.menu_reset_data_base import menu_reset_data_base
 from menus.menu_principal import menu_principal
 

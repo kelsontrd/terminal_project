@@ -3,10 +3,6 @@ from models.Ball import Ball
 from db.db_base import session
 from sqlalchemy import delete
 from search_api.convert_spreadsheet_data_json import init
-import sys
-import time
-from util.system_clear import clear_system
-
 
 def ball_init_base():
     init()
@@ -52,7 +48,7 @@ def ball_init_base():
         session.execute(delete(Ball))  # Clear existing data
         session.add_all(balls)
         session.commit()
-        print("Balls inserted successfully.")
+        print("Balls inseridas com sucesso.")
     except Exception as e:
-        print(f"Error inserting balls: {e}")
+        print(f"Erro ao inserir bolas: {e}")
         session.rollback()

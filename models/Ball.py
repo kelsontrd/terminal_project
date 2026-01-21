@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer
+from sqlalchemy.orm import relationship
 from db.db_base import Base
 from models.Timestump import Timestump
 
@@ -12,4 +13,10 @@ class Ball(Timestump, Base):
     max_sequence = Column(Integer)
     currente_delay = Column(Integer)
     max_delay = Column(Integer)
-    
+
+    #Relação Many-to-Many com Game    
+    games = relationship(
+        "Game",
+        secondary="game_ball",
+        back_populates="drawn_balls",
+    )

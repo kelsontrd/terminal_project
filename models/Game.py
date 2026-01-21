@@ -1,11 +1,12 @@
-from sqlalchemy import Column, Integer, ManyToMany
+from sqlalchemy import Column, Integer, Table, ForeignKey
+from sqlalchemy.orm import relationship
+from models.Ball import Ball
 from db.db_base import Base
 from models.Timestump import Timestump
-from models.Ball import Ball
 
 # Modelo da tabela de bolas
 class Game(Timestump, Base):
-    __tablename__ = "game"
+    __tablename__ = "games"
     id = Column(Integer, primary_key=True)
     number = Column(Integer, unique=True)
     pairs = Column(Integer)
@@ -33,5 +34,19 @@ class Game(Timestump, Base):
     winners_13_hits = Column(Integer)
     winners_12_hits = Column(Integer)
     winners_11_hits = Column(Integer)
-    drawn_balls = ManyToMany(Ball, secondary="game_ball")
-    
+
+    # Relação Many-to-Many com Ball
+    drawn_balls = relationship(
+        "Ball",
+        secondary="game_ball",
+        back_populates="games",
+        #back_populates="games", # se usado não pre
+    )
+
+# Tabela de associação entre Game e Ball
+game_ball = Table(
+    "game_ball",
+    Base.metadata,
+    Column("games_id", Integer, ForeignKey("games.id"), primary_key=True),
+    Column("balls_id", Integer, ForeignKey("balls.id"), primary_key=True),
+)
