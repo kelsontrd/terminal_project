@@ -1,6 +1,7 @@
 from util.system_clear import clear_system
 from models_manipulations.ball_manipulation.ball_init_base import ball_init_base
 from models_manipulations.game_manipulation.game_init_base import game_init_base
+from models_manipulations.game_manipulation.games_update.game_update import game_update
 def menu_reset_data_base():
     clear_system()
     print("\n--- Resetar ou Atualizar Base De Dados ---\n")
@@ -20,7 +21,7 @@ def menu_reset_data_base():
         return "menu_reset_data_base"
     elif op == "2":
         print("🔄 Atualizando base de dados...")
-        #ball_init_base()
+        game_update()
         print("✅ Base de dados atualizada com sucesso!")
         input("Presione Enter para voltar ao menu...")
         return "menu_reset_data_base"

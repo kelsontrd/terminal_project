@@ -4,7 +4,8 @@ from sqlalchemy.orm import joinedload
 from models.Game import Game
 from models.Ball import Ball
 import datetime
-from models_manipulations.game_manipulation.GameCalcdata import GameCalcData 
+from models_manipulations.game_manipulation.GameCalcdata import GameCalcData
+from models_manipulations.ball_manipulation.ball_update import ball_update
 
 def game_update():
     # tras relações completas
@@ -17,7 +18,9 @@ def game_update():
         return {"error": "Nenhum jogo encontrado, tente reiniciar a base de dados!"}
     
     if last_game_in_base != last_game_in_api:
+        print("Tabela de jogos desatualizada, iniciando atualização...")
         if last_game_in_api["numero"] - object_last_game_in_base.number == 1:
+            ball_update(last_game_in_api["listaDezenas"])
             game_temp = Game(
                 number = last_game_in_api["numero"],
                 date = datetime.datetime.strptime(last_game_in_api["dataApuracao"], "%d/%m/%Y"),
@@ -67,8 +70,10 @@ def game_update():
             print(f"Atualizando jogos a partir de {object_last_game_in_base.number} até {last_game_in_api['numero']}...")
             update_games = []
             previous_game_balls = last_game_in_base
+            
             for i in range(object_last_game_in_base.number + 1, last_game_in_api["numero"] + 1):
                 last_game_in_api = get_game(i)
+                ball_update(last_game_in_api["listaDezenas"])
                 game_temp=Game(
                     number=last_game_in_api["numero"],
                     date=datetime.datetime.strptime(last_game_in_api["dataApuracao"], "%d/%m/%Y"),

@@ -5,7 +5,7 @@ from sqlalchemy import delete
 from search_api.convert_spreadsheet_data_json import init
 
 def ball_init_base():
-    #init()
+    #init() # inicializa o arquivo base_games.json a partir da planilha atualizada completa alterar para teste
     data_balls = load_json("base_games")
     balls = []
     
