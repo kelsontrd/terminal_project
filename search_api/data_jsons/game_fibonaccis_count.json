@@ -1,0 +1,30 @@
+[
+    {
+        "fibonacci": 1,
+        "ocorrencias": 19
+    },
+    {
+        "fibonacci": 2,
+        "ocorrencias": 216
+    },
+    {
+        "fibonacci": 3,
+        "ocorrencias": 713
+    },
+    {
+        "fibonacci": 4,
+        "ocorrencias": 1220
+    },
+    {
+        "fibonacci": 5,
+        "ocorrencias": 1006
+    },
+    {
+        "fibonacci": 6,
+        "ocorrencias": 380
+    },
+    {
+        "fibonacci": 7,
+        "ocorrencias": 41
+    }
+]

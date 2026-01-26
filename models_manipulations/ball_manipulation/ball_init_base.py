@@ -1,11 +1,11 @@
 from util.json_manipulation import load_json
 from models.Ball import Ball
-from db.db_base import session
+from db.db_base import get_session
 from sqlalchemy import delete
 from search_api.convert_spreadsheet_data_json import init
 
 def ball_init_base():
-    #init()
+    #init() # inicializa o arquivo base_games.json a partir da planilha atualizada completa alterar para teste
     data_balls = load_json("base_games")
     balls = []
     
@@ -44,10 +44,11 @@ def ball_init_base():
         # time.sleep(0.05) # para não sobrecarregar o terminal com atualizações
     try:
         # session.bulk_insert_mappings(Ball, balls)
-        session.execute(delete(Ball))  # Clear existing data
-        session.add_all(balls)
-        session.commit()
-        print("Balls inseridas com sucesso.")
+        with get_session() as session:
+            session.execute(delete(Ball))  # Clear existing data
+            session.add_all(balls)
+            session.commit()
+            print("Balls inseridas com sucesso.")
     except Exception as e:
         print(f"Erro ao inserir bolas: {e}")
         session.rollback()

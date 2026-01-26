@@ -1,0 +1,46 @@
+[
+    {
+        "repeated_previous_game": 0,
+        "ocorrencias": 3
+    },
+    {
+        "repeated_previous_game": 5,
+        "ocorrencias": 1
+    },
+    {
+        "repeated_previous_game": 6,
+        "ocorrencias": 51
+    },
+    {
+        "repeated_previous_game": 7,
+        "ocorrencias": 340
+    },
+    {
+        "repeated_previous_game": 8,
+        "ocorrencias": 877
+    },
+    {
+        "repeated_previous_game": 9,
+        "ocorrencias": 1176
+    },
+    {
+        "repeated_previous_game": 10,
+        "ocorrencias": 777
+    },
+    {
+        "repeated_previous_game": 11,
+        "ocorrencias": 303
+    },
+    {
+        "repeated_previous_game": 12,
+        "ocorrencias": 59
+    },
+    {
+        "repeated_previous_game": 13,
+        "ocorrencias": 7
+    },
+    {
+        "repeated_previous_game": 14,
+        "ocorrencias": 1
+    }
+]
