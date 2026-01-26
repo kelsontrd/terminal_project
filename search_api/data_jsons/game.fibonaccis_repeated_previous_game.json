@@ -1,0 +1,34 @@
+[
+    {
+        "fibonaccis_repeated_previous_game": 0,
+        "ocorrencias": 88
+    },
+    {
+        "fibonaccis_repeated_previous_game": 1,
+        "ocorrencias": 571
+    },
+    {
+        "fibonaccis_repeated_previous_game": 2,
+        "ocorrencias": 1151
+    },
+    {
+        "fibonaccis_repeated_previous_game": 3,
+        "ocorrencias": 1146
+    },
+    {
+        "fibonaccis_repeated_previous_game": 4,
+        "ocorrencias": 501
+    },
+    {
+        "fibonaccis_repeated_previous_game": 5,
+        "ocorrencias": 121
+    },
+    {
+        "fibonaccis_repeated_previous_game": 6,
+        "ocorrencias": 17
+    },
+    {
+        "fibonaccis_repeated_previous_game": 7,
+        "ocorrencias": 1
+    }
+]

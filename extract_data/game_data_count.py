@@ -7,7 +7,7 @@ from sqlalchemy import or_, and_
 import numpy as np
 
 
-def game_pairs_count():
+def game_data_count():
     with get_session() as session:
         games = session.query(Game).all()
 
@@ -69,72 +69,40 @@ def game_pairs_count():
                 for count, oc in zip(count_previous_unicos, ocorrencias_count_previous)
             ]
             save_json(lista_final_count_previous, "game_count_previous_count")
-
-            ouro_default = (
-                session.query(Game)
-                .filter(
-                    or_(
-                        Game.odds == 8,
-                        Game.odds == 7,
-                    ),and_(
-                        Game.border == 10,
-                        Game.center == 5
-
-                    )
-                )
-                .all()
-            )
-            ouro_default_2 = (
-                session.query(Game)
-                .filter(
-                    or_(
-                        Game.odds == 8,
-                        Game.odds == 7,
-                    ),and_(
-                        Game.border == 9,
-                        Game.center == 6
-
-                    )
-                )
-                .all()
-            )
-            ouro_default_3 = (
-                session.query(Game)
-                .filter(
-                    or_(
-                        Game.odds == 8,
-                        Game.odds == 7,
-                    ),and_(
-                        Game.border == 9,
-                        Game.center == 6,
-                        Game.fibonaccis == 4
-                    )
-                )
-                .all()
-            )
-            ouro_default_4 = (
-                session.query(Game)
-                .filter(
-                    or_(
-                        Game.odds == 8,
-                        Game.odds == 7,
-                    ),and_(
-                        Game.border == 10,
-                        Game.center == 5,
-                        Game.fibonaccis == 4
-                    )
-                )
-                .all()
-            )
-            print(f"Ouro Default 1 (7 ou 8 impares),(10 na borda e 5 no centro)encontrado em {len(ouro_default)} jogos entre {len(games)}.")
-            print(f"Ouro Default 4 (7 ou 8 impares),(10 na borda e 5 no centro e 4 fibonacci)encontrado em {len(ouro_default_4)} jogos entre {len(games)}.")
-            print(f"Ouro Default 3 (7 ou 8 impares),(9 na borda e 6 no centro e 4 fibonacci)encontrado em {len(ouro_default_3)} jogos entre {len(games)}.")
-            print(f"Ouro Default 2 (7 ou 8 impares),(9 na borda e 6 no centro)encontrado em {len(ouro_default_2)} jogos entre {len(games)}.")
             
+            result_count_previous = np.array([game.odds_repeated_previous_game for game in games])
+            count_previous_unicos, ocorrencias_count_previous = np.unique(
+                result_count_previous, return_counts=True
+            )
+            lista_final_odds_repeated_previous_game = [
+                {"odds_repeated_previous_game": int(count), "ocorrencias": int(oc)}
+                for count, oc in zip(count_previous_unicos, ocorrencias_count_previous)
+            ]
+            save_json( lista_final_odds_repeated_previous_game, " game_odds_repeated_previous_game")
+            
+            result_count_previous = np.array([game.primes_repeated_previous_game for game in games])
+            count_previous_unicos, ocorrencias_count_previous = np.unique(
+                result_count_previous, return_counts=True
+            )
+            lista_primes_repeated_previous_game = [
+                {"odds_repeated_previous_game": int(count), "ocorrencias": int(oc)}
+                for count, oc in zip(count_previous_unicos, ocorrencias_count_previous)
+            ]
+            save_json( lista_primes_repeated_previous_game, "game.primes_repeated_previous_game")
+            
+            result_count_previous = np.array([game.fibonaccis_repeated_previous_game for game in games])
+            count_previous_unicos, ocorrencias_count_previous = np.unique(
+                result_count_previous, return_counts=True
+            )
+            lista_fibonaccis_repeated_previous_game = [
+                {"fibonaccis_repeated_previous_game": int(count), "ocorrencias": int(oc)}
+                for count, oc in zip(count_previous_unicos, ocorrencias_count_previous)
+            ]
+            save_json( lista_fibonaccis_repeated_previous_game, "game.fibonaccis_repeated_previous_game")
             
         else:
             print("No games found in database")
 
 
 if __name__ == "__main__":
-    game_pairs_count()
+    game_data_count()

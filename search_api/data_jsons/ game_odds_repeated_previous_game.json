@@ -1,0 +1,42 @@
+[
+    {
+        "odds_repeated_previous_game": 0,
+        "ocorrencias": 4
+    },
+    {
+        "odds_repeated_previous_game": 1,
+        "ocorrencias": 15
+    },
+    {
+        "odds_repeated_previous_game": 2,
+        "ocorrencias": 148
+    },
+    {
+        "odds_repeated_previous_game": 3,
+        "ocorrencias": 531
+    },
+    {
+        "odds_repeated_previous_game": 4,
+        "ocorrencias": 949
+    },
+    {
+        "odds_repeated_previous_game": 5,
+        "ocorrencias": 1003
+    },
+    {
+        "odds_repeated_previous_game": 6,
+        "ocorrencias": 634
+    },
+    {
+        "odds_repeated_previous_game": 7,
+        "ocorrencias": 252
+    },
+    {
+        "odds_repeated_previous_game": 8,
+        "ocorrencias": 49
+    },
+    {
+        "odds_repeated_previous_game": 9,
+        "ocorrencias": 11
+    }
+]
