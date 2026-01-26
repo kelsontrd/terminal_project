@@ -107,3 +107,6 @@ def save_data():
 def init():
     get_plan()
     save_data()
+
+if __name__ == "__main__":
+    init()

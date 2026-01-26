@@ -1,0 +1,38 @@
+[
+    {
+        "prime": 1,
+        "ocorrencias": 2
+    },
+    {
+        "prime": 2,
+        "ocorrencias": 19
+    },
+    {
+        "prime": 3,
+        "ocorrencias": 171
+    },
+    {
+        "prime": 4,
+        "ocorrencias": 630
+    },
+    {
+        "prime": 5,
+        "ocorrencias": 1103
+    },
+    {
+        "prime": 6,
+        "ocorrencias": 1046
+    },
+    {
+        "prime": 7,
+        "ocorrencias": 504
+    },
+    {
+        "prime": 8,
+        "ocorrencias": 112
+    },
+    {
+        "prime": 9,
+        "ocorrencias": 8
+    }
+]

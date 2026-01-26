@@ -13,7 +13,7 @@ def load_json(file_name):
         return None
     
 def save_json(data, file_name):
-    file_path = os.path.join(os.getcwd(), "data_jsons", f"{file_name}.json")
+    file_path = os.path.join(os.getcwd(), 'search_api', "data_jsons", f"{file_name}.json")
     try:
         with open(file_path, 'w', encoding='utf-8') as file:
             json.dump(data, file, ensure_ascii=False, indent=4)
