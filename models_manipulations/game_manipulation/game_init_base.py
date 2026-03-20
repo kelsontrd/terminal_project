@@ -9,64 +9,213 @@ import datetime
 # Inicia a base de dados de jogos, carrega os dados do JSON e insere na tabela Game
 # Usada para apagar todo o banco de dados e inserir os dados novamente
 
+# def game_init_base():
+#     session.execute(delete(Game))
+#     session.execute(delete(game_ball))
+#     session.commit()
+#     data_games = load_json("base_games")
+#     games = []
+#     previous_game_balls = None
+#     # Pré-carrega todas as bolas em memória para evitar milhares de queries
+#     balls_map = {b.desc: b for b in session.query(Ball).all()}
+#     print("Criando instâncias de jogos Aguarde...")
+#     with get_session() as session:
+#         for game in data_games:
+#             game_temp = Game(
+#                     number=game["concurso"],
+#                     date=datetime.datetime.strptime(game["data"], "%d/%m/%Y"),
+#                     pairs=int(GameCalcData.cont_pairs(game["drawn_numbers"])),
+#                     sum_pairs=int(GameCalcData.sum_pairs(game["drawn_numbers"])),
+#                     odds=int(GameCalcData.cont_odds(game["drawn_numbers"])),
+#                     sum_odds=int(GameCalcData.sum_odds(game["drawn_numbers"])),
+#                     primes=int(GameCalcData.cont_primes(game["drawn_numbers"])),
+#                     sum_primes=int(GameCalcData.sum_primes(game["drawn_numbers"])),
+#                     fibonaccis=int(GameCalcData.cont_fibonaccis(game["drawn_numbers"])),
+#                     sum_fibonaccis=int(GameCalcData.sum_fibonaccis(game["drawn_numbers"])),
+#                     sum_general=int(GameCalcData.sum_array(game["drawn_numbers"])),
+#                     center=int(GameCalcData.cont_center(game["drawn_numbers"])),
+#                     sum_center=int(GameCalcData.sum_center(game["drawn_numbers"])),
+#                     border=int(GameCalcData.cont_border(game["drawn_numbers"])),
+#                     sum_border=int(GameCalcData.sum_border(game["drawn_numbers"])),
+#                     repeated_previous_game=int(GameCalcData.count_repeated_previous_game(game["drawn_numbers"], previous_game_balls)),
+#                     pairs_repeated_previous_game=int(GameCalcData.count_pairs_repeated_previous_game(game["drawn_numbers"], previous_game_balls)),
+#                     odds_repeated_previous_game=int(GameCalcData.count_odds_repeated_previous_game(game["drawn_numbers"], previous_game_balls)),
+#                     primes_repeated_previous_game=int(GameCalcData.count_primes_repeated_previous_game(game["drawn_numbers"], previous_game_balls)),
+#                     fibonaccis_repeated_previous_game=int(GameCalcData.count_fibonaccis_repeated_previous_game(game["drawn_numbers"], previous_game_balls)),
+#                     center_repeated_previous_game=int(GameCalcData.cont_center_repeated_previous_game(game["drawn_numbers"], previous_game_balls)),
+#                     border_repeated_previous_game=int(GameCalcData.cont_border_repeated_previous_game(game["drawn_numbers"], previous_game_balls)),
+#                     winners_15_hits=game["winners_15_hits"],
+#                     winners_14_hits=game["winners_14_hits"],
+#                     winners_13_hits=game["winners_13_hits"],
+#                     winners_12_hits=game["winners_12_hits"],
+#                     winners_11_hits=game["winners_11_hits"],
+#                 )
+#             session.add(game_temp)
+#             with session.no_autoflush:
+#                 for ball_number in game["drawn_numbers"]:
+#                     ball_instance = balls_map.get(ball_number)
+#                     if ball_instance:
+#                         game_temp.drawn_balls.append(ball_instance)
+#             games.append(game_temp)
+#             previous_game_balls = game["drawn_numbers"]
+#         try:
+#             print("Inserindo jogos na base de dados...")
+#             # session.execute(delete(Game))  # Clear existing data
+#             session.add_all(games)
+#             session.commit()
+#             print("Games inseridos com sucesso.")
+#         except Exception as e:
+#             print(f"Erro ao inserir jogos: {e}")
+#             session.rollback()
+# if __name__ == "__main__":
+#     print("Executando game_init_base.py diretamente...")
+#     game_init_base()
+
+
 def game_init_base():
-    session.execute(delete(Game))
-    session.execute(delete(game_ball))
-    session.commit()
+    """
+    Inicializa a base de dados de jogos a partir de um arquivo JSON.
+
+    Esta função executa os seguintes passos:
+
+    1. Carrega os jogos a partir do arquivo JSON `base_games`.
+    2. Limpa os registros existentes nas tabelas `Game` e na tabela de associação `game_ball`.
+    3. Pré-carrega todas as bolas existentes no banco para evitar múltiplas consultas.
+    4. Cria objetos `Game` com diversas estatísticas calculadas a partir dos números sorteados.
+    5. Associa cada jogo às bolas sorteadas.
+    6. Insere todos os jogos no banco de dados em uma única operação.
+
+    Também calcula estatísticas relacionadas ao jogo anterior, como:
+    - quantidade de números repetidos
+    - pares repetidos
+    - ímpares repetidos
+    - primos repetidos
+    - fibonacci repetidos
+    - números do centro ou da borda repetidos
+
+    Returns
+    -------
+    None
+        A função não retorna valores. Apenas popula o banco de dados.
+    """
+
+    # Carrega os dados dos jogos a partir de um arquivo JSON
     data_games = load_json("base_games")
-    games = []
+
+    # Armazena os números do jogo anterior
     previous_game_balls = None
-    # Pré-carrega todas as bolas em memória para evitar milhares de queries 
-    balls_map = {b.desc: b for b in session.query(Ball).all()}
+
     print("Criando instâncias de jogos Aguarde...")
+
+    # Cria uma sessão de banco de dados usando o gerenciador de contexto
     with get_session() as session:
+
+        # Remove todos os registros existentes nas tabelas
+        session.execute(delete(Game))
+        session.execute(delete(game_ball))
+
+        # Pré-carrega todas as bolas do banco para evitar milhares de consultas
+        # Cria um dicionário onde a chave é a descrição da bola
+        balls_map = {b.desc: b for b in session.query(Ball).all()}
+
+        # Lista que armazenará todos os objetos Game criados
+        games = []
+
+        # Percorre todos os jogos carregados do JSON
         for game in data_games:
+
+            # Cria uma instância do modelo Game com estatísticas calculadas
             game_temp = Game(
-                    number=game["concurso"],
-                    date=datetime.datetime.strptime(game["data"], "%d/%m/%Y"),
-                    pairs=int(GameCalcData.cont_pairs(game["drawn_numbers"])),
-                    sum_pairs=int(GameCalcData.sum_pairs(game["drawn_numbers"])),
-                    odds=int(GameCalcData.cont_odds(game["drawn_numbers"])),
-                    sum_odds=int(GameCalcData.sum_odds(game["drawn_numbers"])),
-                    primes=int(GameCalcData.cont_primes(game["drawn_numbers"])),
-                    sum_primes=int(GameCalcData.sum_primes(game["drawn_numbers"])),
-                    fibonaccis=int(GameCalcData.cont_fibonaccis(game["drawn_numbers"])),
-                    sum_fibonaccis=int(GameCalcData.sum_fibonaccis(game["drawn_numbers"])),
-                    sum_general=int(GameCalcData.sum_array(game["drawn_numbers"])),
-                    center=int(GameCalcData.cont_center(game["drawn_numbers"])),
-                    sum_center=int(GameCalcData.sum_center(game["drawn_numbers"])),
-                    border=int(GameCalcData.cont_border(game["drawn_numbers"])),
-                    sum_border=int(GameCalcData.sum_border(game["drawn_numbers"])), 
-                    repeated_previous_game=int(GameCalcData.count_repeated_previous_game(game["drawn_numbers"], previous_game_balls)),
-                    pairs_repeated_previous_game=int(GameCalcData.count_pairs_repeated_previous_game(game["drawn_numbers"], previous_game_balls)),
-                    odds_repeated_previous_game=int(GameCalcData.count_odds_repeated_previous_game(game["drawn_numbers"], previous_game_balls)),
-                    primes_repeated_previous_game=int(GameCalcData.count_primes_repeated_previous_game(game["drawn_numbers"], previous_game_balls)),
-                    fibonaccis_repeated_previous_game=int(GameCalcData.count_fibonaccis_repeated_previous_game(game["drawn_numbers"], previous_game_balls)),
-                    center_repeated_previous_game=int(GameCalcData.cont_center_repeated_previous_game(game["drawn_numbers"], previous_game_balls)),
-                    border_repeated_previous_game=int(GameCalcData.cont_border_repeated_previous_game(game["drawn_numbers"], previous_game_balls)),
-                    winners_15_hits=game["winners_15_hits"],
-                    winners_14_hits=game["winners_14_hits"],
-                    winners_13_hits=game["winners_13_hits"],
-                    winners_12_hits=game["winners_12_hits"],
-                    winners_11_hits=game["winners_11_hits"],
-                )
-            session.add(game_temp)
-            with session.no_autoflush: 
-                for ball_number in game["drawn_numbers"]: 
-                    ball_instance = balls_map.get(ball_number) 
-                    if ball_instance: 
+                number=game["concurso"],
+                # Converte a data do formato string para datetime
+                date=datetime.datetime.strptime(game["data"], "%d/%m/%Y"),
+                # Estatísticas de números pares
+                pairs=int(GameCalcData.cont_pairs(game["drawn_numbers"])),
+                sum_pairs=int(GameCalcData.sum_pairs(game["drawn_numbers"])),
+                # Estatísticas de números ímpares
+                odds=int(GameCalcData.cont_odds(game["drawn_numbers"])),
+                sum_odds=int(GameCalcData.sum_odds(game["drawn_numbers"])),
+                # Estatísticas de números primos
+                primes=int(GameCalcData.cont_primes(game["drawn_numbers"])),
+                sum_primes=int(GameCalcData.sum_primes(game["drawn_numbers"])),
+                # Estatísticas de números de Fibonacci
+                fibonaccis=int(GameCalcData.cont_fibonaccis(game["drawn_numbers"])),
+                sum_fibonaccis=int(GameCalcData.sum_fibonaccis(game["drawn_numbers"])),
+                # Soma geral dos números sorteados
+                sum_general=int(GameCalcData.sum_array(game["drawn_numbers"])),
+                # Estatísticas de números do centro do volante
+                center=int(GameCalcData.cont_center(game["drawn_numbers"])),
+                sum_center=int(GameCalcData.sum_center(game["drawn_numbers"])),
+                # Estatísticas de números da borda do volante
+                border=int(GameCalcData.cont_border(game["drawn_numbers"])),
+                sum_border=int(GameCalcData.sum_border(game["drawn_numbers"])),
+                # Estatísticas comparando com o jogo anterior
+                repeated_previous_game=int(
+                    GameCalcData.count_repeated_previous_game(
+                        game["drawn_numbers"], previous_game_balls
+                    )
+                ),
+                pairs_repeated_previous_game=int(
+                    GameCalcData.count_pairs_repeated_previous_game(
+                        game["drawn_numbers"], previous_game_balls
+                    )
+                ),
+                odds_repeated_previous_game=int(
+                    GameCalcData.count_odds_repeated_previous_game(
+                        game["drawn_numbers"], previous_game_balls
+                    )
+                ),
+                primes_repeated_previous_game=int(
+                    GameCalcData.count_primes_repeated_previous_game(
+                        game["drawn_numbers"], previous_game_balls
+                    )
+                ),
+                fibonaccis_repeated_previous_game=int(
+                    GameCalcData.count_fibonaccis_repeated_previous_game(
+                        game["drawn_numbers"], previous_game_balls
+                    )
+                ),
+                center_repeated_previous_game=int(
+                    GameCalcData.cont_center_repeated_previous_game(
+                        game["drawn_numbers"], previous_game_balls
+                    )
+                ),
+                border_repeated_previous_game=int(
+                    GameCalcData.cont_border_repeated_previous_game(
+                        game["drawn_numbers"], previous_game_balls
+                    )
+                ),
+                # Quantidade de ganhadores por faixa
+                winners_15_hits=game["winners_15_hits"],
+                winners_14_hits=game["winners_14_hits"],
+                winners_13_hits=game["winners_13_hits"],
+                winners_12_hits=game["winners_12_hits"],
+                winners_11_hits=game["winners_11_hits"],
+            )
+
+            # Associa as bolas sorteadas ao jogo
+            # no_autoflush evita que o SQLAlchemy tente salvar antes da hora
+            with session.no_autoflush:
+                for ball_number in game["drawn_numbers"]:
+                    ball_instance = balls_map.get(ball_number)
+
+                    if ball_instance:
                         game_temp.drawn_balls.append(ball_instance)
+
+            # Adiciona o jogo à lista de jogos
             games.append(game_temp)
+
+            # Atualiza os números do jogo anterior
             previous_game_balls = game["drawn_numbers"]
+
         try:
             print("Inserindo jogos na base de dados...")
-            # session.execute(delete(Game))  # Clear existing data
+
+            # Insere todos os jogos no banco
             session.add_all(games)
-            session.commit()
+
             print("Games inseridos com sucesso.")
+
         except Exception as e:
             print(f"Erro ao inserir jogos: {e}")
             session.rollback()
-if __name__ == "__main__":
-    print("Executando game_init_base.py diretamente...")
-    game_init_base()
